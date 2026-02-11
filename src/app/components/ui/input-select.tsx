@@ -23,6 +23,7 @@ export const InputSelect = ({
       <div className="relative w-full">
         <input
           type="text"
+          className="pr-10!"
           id={id}
           value={inputValue}
           onChange={(e) => {
