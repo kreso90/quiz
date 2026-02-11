@@ -161,6 +161,32 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
               </div>
             </div>
           ))}
+          <button
+            type="button"
+            onClick={handleAddQuestion}
+            className="
+              w-full
+              min-h-46.25
+              border-2
+              border-dashed
+              border-green-300
+              rounded
+              bg-green-50
+              flex
+              flex-col
+              items-center
+              justify-center
+              gap-2
+              text-green-700
+              hover:bg-green-100
+              hover:border-green-400
+              transition
+              cursor-pointer
+            "
+          >
+            <Plus size={24} />
+            <span className="text-sm font-medium">Add Question</span>
+          </button>
         </div>
 
         <input
@@ -177,23 +203,12 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
 
         {isEdit && <input type="hidden" name="quizId" value={quiz.id} />}
 
-        <div className={`space-y-3 ${isEdit && "lg:max-w-lg lg:mx-auto"}`}>
-          <Button
-            text="Add Question"
-            icon={<Plus size={18} />}
-            type="button"
-            className="w-full text-sm"
-            color="bg-green-600 hover:bg-green-700"
-            onClick={handleAddQuestion}
-          />
-
-          <Button
-            text={isEdit ? "Update Quiz" : "Create Quiz"}
-            type="submit"
-            disabled={isPending}
-            className={`w-full text-sm ${isPending ? "bg-blue-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}`}
-          />
-        </div>
+        <Button
+          text={isEdit ? "Update Quiz" : "Create Quiz"}
+          type="submit"
+          disabled={isPending}
+          className={`w-full text-sm ${isPending ? "bg-blue-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}`}
+        />
       </form>
 
       {state && (
