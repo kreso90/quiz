@@ -34,7 +34,7 @@ export default async function Quiz({
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-2.5">
+      <div className="container">
         <CreateQuiz quizData={quiz} questionsData={questions} />
       </div>
     </>

@@ -35,7 +35,7 @@ export const Modal = ({ isOpen, onClose, children }: ModalProps) => {
           className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition cursor-pointer"
         />
 
-        <div className="p-6 pt-8">{children}</div>
+        <div className="p-4 pt-8">{children}</div>
       </div>
     </div>,
     document.body,

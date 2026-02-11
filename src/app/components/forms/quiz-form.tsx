@@ -76,89 +76,92 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
   return (
     <>
       <form action={formAction} className="space-y-6">
-        <div>
-          <label
-            htmlFor="name"
-            className="block mb-1 text-sm font-medium text-gray-700"
-          >
-            Quiz Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={quiz?.name}
-            onChange={(e) => handleChangeName(e.target.value)}
-            required
-            className="w-full rounded border border-gray-300 px-3 py-2 text-sm
+        <div className={`${isEdit && "grid lg:grid-cols-2 gap-4"}`}>
+          <div>
+            <label
+              htmlFor="name"
+              className="block mb-1 text-sm font-medium text-gray-700"
+            >
+              Quiz Name
+            </label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={quiz?.name}
+              onChange={(e) => handleChangeName(e.target.value)}
+              required
+              className="w-full rounded border border-gray-300 px-3 py-2 text-sm
                  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          />
-        </div>
-
-        {questions.map((question, index) => (
-          <div
-            key={question.id}
-            className="rounded border border-gray-200 p-4 bg-gray-50"
-          >
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-sm font-semibold text-gray-800">
-                Question {index + 1}
-              </h3>
-
-              <Trash2
-                size={18}
-                className="text-red-500 hover:text-red-700 cursor-pointer transition"
-                onClick={() => handleDeleteQuestion(question.id)}
-              />
-            </div>
-
-            <div className="mb-4">
-              <InputSelect
-                required
-                value={question.question}
-                options={
-                  questionsData
-                    ?.filter(
-                      (q) =>
-                        !questions.some(
-                          (added) => added.question === q.question,
-                        ),
-                    )
-                    .map((q) => q.question) || []
-                }
-                onInputChange={(value) => {
-                  handleChangeQuestion(question.id, "question", value);
-                }}
-                onOptionSelect={(value) => {
-                  const selectedQuestion = questionsData?.find(
-                    (q) => q.question === value,
-                  );
-                  handleChangeQuestion(
-                    question.id,
-                    "answer",
-                    selectedQuestion?.answer || "",
-                  );
-                }}
-              />
-            </div>
-
-            <div>
-              <label className="block mb-1 text-sm font-medium text-gray-700">
-                Answer
-              </label>
-              <input
-                required
-                type="text"
-                value={question.answer}
-                onChange={(e) =>
-                  handleChangeQuestion(question.id, "answer", e.target.value)
-                }
-                className="w-full rounded border border-gray-300 px-3 py-2 text-sm
-                     focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              />
-            </div>
+            />
           </div>
-        ))}
+        </div>
+        <div className={`grid grid-cols-1 gap-4 ${isEdit && "lg:grid-cols-2"}`}>
+          {questions.map((question, index) => (
+            <div
+              key={question.id}
+              className="rounded border border-gray-200 p-4 bg-gray-50"
+            >
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-sm font-semibold text-gray-800">
+                  Question {index + 1}
+                </h3>
+
+                <Trash2
+                  size={18}
+                  className="text-red-500 hover:text-red-700 cursor-pointer transition"
+                  onClick={() => handleDeleteQuestion(question.id)}
+                />
+              </div>
+
+              <div className="mb-4">
+                <InputSelect
+                  required
+                  value={question.question}
+                  options={
+                    questionsData
+                      ?.filter(
+                        (q) =>
+                          !questions.some(
+                            (added) => added.question === q.question,
+                          ),
+                      )
+                      .map((q) => q.question) || []
+                  }
+                  onInputChange={(value) => {
+                    handleChangeQuestion(question.id, "question", value);
+                  }}
+                  onOptionSelect={(value) => {
+                    const selectedQuestion = questionsData?.find(
+                      (q) => q.question === value,
+                    );
+                    handleChangeQuestion(
+                      question.id,
+                      "answer",
+                      selectedQuestion?.answer || "",
+                    );
+                  }}
+                />
+              </div>
+
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Answer
+                </label>
+                <input
+                  required
+                  type="text"
+                  value={question.answer}
+                  onChange={(e) =>
+                    handleChangeQuestion(question.id, "answer", e.target.value)
+                  }
+                  className="w-full rounded border border-gray-300 px-3 py-2 text-sm
+                     focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                />
+              </div>
+            </div>
+          ))}
+        </div>
 
         <input
           type="hidden"
@@ -174,7 +177,7 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
 
         {isEdit && <input type="hidden" name="quizId" value={quiz.id} />}
 
-        <div className="space-y-3">
+        <div className={`space-y-3 ${isEdit && "lg:max-w-lg lg:mx-auto"}`}>
           <Button
             text="Add Question"
             icon={<Plus size={18} />}
