@@ -5,8 +5,8 @@ import { CreateQuiz } from "./components/forms/quiz-form";
 
 export default async function Home() {
   const [quizzesRes, questionsRes] = await Promise.all([
-    fetch(`${process.env.API_URL}/quizzes`),
-    fetch(`${process.env.API_URL}/questions`),
+    fetch(`${process.env.API_URL}/quizzes`, { cache: "no-cache" }),
+    fetch(`${process.env.API_URL}/questions`, { cache: "no-cache" }),
   ]);
 
   const quizzes = await quizzesRes.json();
