@@ -17,7 +17,7 @@ export const Button = ({
   return (
     <button
       {...props}
-      className={`${props.className || ""} ${props.disabled ? "opacity-50 cursor-not-allowed" : ""} ${color} ${size === "small" ? "px-2 py-1 text-sm" : "px-4 py-2"} flex gap-2 items-center justify-center rounded text-white font-medium transition cursor-pointer duration-200`}
+      className={`${props.className || ""} ${props.disabled ? "opacity-50 cursor-not-allowed" : ""} ${color} ${size === "small" ? "px-2 py-1" : "px-4 py-2"} text-sm flex gap-2 items-center justify-center rounded text-white font-medium transition cursor-pointer duration-200`}
     >
       {text}
       {icon}

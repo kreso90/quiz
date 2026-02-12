@@ -7,10 +7,19 @@ export default async function Quiz({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+
   const [quizRes, questionsRes] = await Promise.all([
     fetch(`${process.env.API_URL}/quizzes/${id}`),
     fetch(`${process.env.API_URL}/questions`),
   ]);
+
+  if (!quizRes.ok) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <span>Quiz not found</span>
+      </div>
+    );
+  }
 
   const quiz = await quizRes.json();
   const questions = await questionsRes.json();

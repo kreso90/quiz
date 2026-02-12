@@ -10,9 +10,19 @@ interface SolveQuizProps {
 }
 
 export const SolveQuiz = ({ quizData }: SolveQuizProps) => {
+  const [isFinished, setIsFinished] = useState(false);
   const [visibleAnswers, setVisibleAnswers] = useState<Record<number, boolean>>(
     {},
   );
+  const [index, setIndex] = useState(0);
+
+  if (!quizData.questions) {
+    return (
+      <div className="flex justify-center items-center">
+        Quiz does not exist or has no questions
+      </div>
+    );
+  }
 
   const toggleAnswer = (index: number) => {
     setVisibleAnswers((prev) => ({
@@ -21,7 +31,6 @@ export const SolveQuiz = ({ quizData }: SolveQuizProps) => {
     }));
   };
 
-  const [index, setIndex] = useState(0);
   const isLastQuestion = index === quizData.questions.length - 1;
   const allQuestionsSolved = quizData.questions.every(
     (_q, i) => visibleAnswers[i],
@@ -30,11 +39,12 @@ export const SolveQuiz = ({ quizData }: SolveQuizProps) => {
   const restartQuiz = () => {
     setIndex(0);
     setVisibleAnswers({});
+    setIsFinished(false);
   };
 
   return (
     <>
-      {!allQuestionsSolved ? (
+      {!isFinished ? (
         <>
           <div className="text-center mb-6">
             <p className="font-bold text-xl text-gray-800">
@@ -89,15 +99,29 @@ export const SolveQuiz = ({ quizData }: SolveQuizProps) => {
               className={index == 0 ? "opacity-50 cursor-not-allowed!" : ""}
             />
 
-            <Button
-              disabled={isLastQuestion}
-              onClick={() =>
-                setIndex((i) => Math.min(quizData.questions.length - 1, i + 1))
-              }
-              text="Next"
-              color="bg-blue-600 hover:bg-blue-700"
-              className={isLastQuestion ? "opacity-50 cursor-not-allowed!" : ""}
-            />
+            <div className="flex gap-2">
+              <Button
+                disabled={isLastQuestion}
+                onClick={() =>
+                  setIndex((i) =>
+                    Math.min(quizData.questions.length - 1, i + 1),
+                  )
+                }
+                text="Next"
+                color="bg-blue-600 hover:bg-blue-700"
+                className={
+                  isLastQuestion ? "opacity-50 cursor-not-allowed!" : ""
+                }
+              />
+
+              {allQuestionsSolved && (
+                <Button
+                  onClick={() => setIsFinished(true)}
+                  text="Finish Quiz"
+                  color="bg-green-600 hover:bg-green-700"
+                />
+              )}
+            </div>
           </div>
         </>
       ) : (

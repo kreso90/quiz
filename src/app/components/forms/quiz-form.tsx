@@ -17,7 +17,7 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
   const emptyQuiz: Quiz = { id: 0, name: "", questions: [] };
 
   const [quiz, setQuiz] = useState<Quiz>(quizData ?? emptyQuiz);
-  const [questions, setQuestions] = useState<Question[]>(quiz.questions);
+  const [questions, setQuestions] = useState<Question[]>(quiz.questions ?? []);
   const [state, formAction, isPending] = useActionState(
     isEdit ? updateQuiz : createQuiz,
     null,
@@ -99,7 +99,7 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
         <div className={`grid grid-cols-1 gap-4 ${isEdit && "lg:grid-cols-2"}`}>
           {questions.map((question, index) => (
             <div
-              key={question.id}
+              key={index}
               className="rounded border border-gray-200 p-4 bg-gray-50"
             >
               <div className="flex justify-between items-center mb-4">
