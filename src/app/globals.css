@@ -4,6 +4,16 @@ body {
   font-family: var(--font-inter);
 }
 
+@theme{
+  --animate-slide-down: slideDownFade 0.3s ease-in-out;
+  
+  @keyframes slideDownFade {
+    0% { transform: translateY(-20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+}
+
+
 .container {
   @apply max-w-[1200px] mx-auto px-2.5;
 }

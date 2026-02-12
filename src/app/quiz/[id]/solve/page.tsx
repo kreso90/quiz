@@ -23,6 +23,7 @@ export default async function SolveQuizPage({
     <>
       <Header modalButtonLinkText="Edit Quiz" linkPath={`/quiz/${id}`} />
       <div className="container">
+        <h2 className="text-2xl font-bold text-center mb-6">{quiz?.name}</h2>
         <SolveQuiz quizData={quiz} />
       </div>
     </>

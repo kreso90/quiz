@@ -16,6 +16,10 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
 
   const emptyQuiz: Quiz = { id: 0, name: "", questions: [] };
 
+  const [toast, setToast] = useState<{
+    status: "success" | "error";
+    message: string;
+  } | null>(null);
   const [quiz, setQuiz] = useState<Quiz>(quizData ?? emptyQuiz);
   const [questions, setQuestions] = useState<Question[]>(quiz.questions ?? []);
   const [state, formAction, isPending] = useActionState(
@@ -62,15 +66,28 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
     setQuestions((prev) => prev.filter((q) => q.id !== id));
   };
 
-  const onSumbit = useEffectEvent((status: string | undefined) => {
-    if (status === "success" && !isEdit) {
-      setQuiz(emptyQuiz);
-      setQuestions([]);
-    }
-  });
+  const onSumbit = useEffectEvent(
+    (status: string | undefined, message?: string) => {
+      if (status === "success" && !isEdit) {
+        setQuiz(emptyQuiz);
+        setQuestions([]);
+      }
+
+      if (!status) return;
+
+      setToast({
+        status: status === "success" ? "success" : "error",
+        message: message ?? "",
+      });
+
+      setTimeout(() => {
+        setToast(null);
+      }, 2500);
+    },
+  );
 
   useEffect(() => {
-    onSumbit(state?.status);
+    onSumbit(state?.status, state?.message);
   }, [state]);
 
   return (
@@ -211,15 +228,24 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
         />
       </form>
 
-      {state && (
+      {toast && (
         <div
-          className={`my-6 px-4 py-2 rounded text-sm font-medium ${
-            state.status === "success"
-              ? "bg-green-100 text-green-800"
-              : "bg-red-100 text-red-800"
-          }`}
+          className={`
+            fixed top-5 left-0 right-0 z-50
+            px-4 py-3 rounded shadow-lg
+            w-fit mx-auto
+            text-sm font-medium
+            transition-all duration-300
+          
+            ${
+              toast.status === "success"
+                ? "bg-green-600 text-white"
+                : "bg-red-600 text-white"
+            }
+            ${toast.status ? "animate-slide-down" : ""}
+          `}
         >
-          {state.message}
+          {toast?.message}
         </div>
       )}
     </>
