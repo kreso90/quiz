@@ -6,7 +6,6 @@ export interface Quiz {
 
 export interface Question {
   id: number;
-  apiId?: string;
   question: string;
   answer: string;
 }

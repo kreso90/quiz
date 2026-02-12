@@ -61,7 +61,7 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
     setQuestions((prev) => [
       ...prev,
       {
-        id: prev.length + (questionsData?.length ?? 0),
+        id: prev.length,
         question: "",
         answer: "",
       },
