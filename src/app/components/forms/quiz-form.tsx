@@ -2,7 +2,13 @@
 import { createQuiz, updateQuiz } from "@/actions/actions";
 import { Question, Quiz } from "@/types/quiz";
 import { Plus, Trash2 } from "lucide-react";
-import { useActionState, useEffect, useEffectEvent, useState } from "react";
+import {
+  useActionState,
+  useEffect,
+  useEffectEvent,
+  useMemo,
+  useState,
+} from "react";
 import { InputSelect } from "../ui/input-select";
 import { Button } from "../ui/button";
 
@@ -66,7 +72,24 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
     setQuestions((prev) => prev.filter((q) => q.id !== id));
   };
 
-  const onSumbit = useEffectEvent(
+  const hasChanges = useMemo(() => {
+    if (quiz.name !== (quizData?.name ?? "")) return true;
+
+    const initialQuestions = quizData?.questions ?? [];
+
+    if (questions.length !== initialQuestions.length) return true;
+
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i];
+      const iq = initialQuestions[i];
+      if (!iq) return true;
+      if (q.question !== iq.question || q.answer !== iq.answer) return true;
+    }
+
+    return false;
+  }, [quiz, questions, quizData]);
+
+  const onSubmit = useEffectEvent(
     (status: string | undefined, message?: string) => {
       if (status === "success" && !isEdit) {
         setQuiz(emptyQuiz);
@@ -87,7 +110,7 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
   );
 
   useEffect(() => {
-    onSumbit(state?.status, state?.message);
+    onSubmit(state?.status, state?.message);
   }, [state]);
 
   return (
@@ -223,7 +246,7 @@ export const CreateQuiz = ({ quizData, questionsData }: quizProps) => {
         <Button
           text={isEdit ? "Update Quiz" : "Create Quiz"}
           type="submit"
-          disabled={isPending}
+          disabled={isPending || (isEdit && !hasChanges)}
           className={`w-full text-sm ${isPending ? "bg-blue-300 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}`}
         />
       </form>
