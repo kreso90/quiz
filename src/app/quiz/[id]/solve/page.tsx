@@ -7,7 +7,9 @@ export default async function SolveQuizPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const res = await fetch(`${process.env.API_URL}/quizzes/${id}`);
+  const res = await fetch(`${process.env.API_URL}/quizzes/${id}`, {
+    cache: "no-cache",
+  });
 
   if (!res.ok) {
     return (

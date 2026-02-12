@@ -9,8 +9,8 @@ export default async function Quiz({
   const { id } = await params;
 
   const [quizRes, questionsRes] = await Promise.all([
-    fetch(`${process.env.API_URL}/quizzes/${id}`),
-    fetch(`${process.env.API_URL}/questions`),
+    fetch(`${process.env.API_URL}/quizzes/${id}`, { cache: "no-cache" }),
+    fetch(`${process.env.API_URL}/questions`, { cache: "no-cache" }),
   ]);
 
   if (!quizRes.ok) {
